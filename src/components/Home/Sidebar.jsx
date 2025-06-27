@@ -10,7 +10,6 @@ import axios from "axios";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
-  const [Data, setData] = useState([]);
   const [user, setUser] = useState(null);
 
   const headers = {
@@ -36,17 +35,7 @@ const Sidebar = () => {
       }
     };
 
-    const fetchTasks = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/auth/all-tasks", { headers });
-        setData(response.data.tasks);
-      } catch (err) {
-        console.error("Failed to fetch tasks:", err);
-      }
-    };
-
     fetchUserProfile();
-    fetchTasks();
   }, []);
 
   const handleLogout = () => {
@@ -58,7 +47,6 @@ const Sidebar = () => {
 
   return (
     <div className="w-full md:w-64 bg-[#003366] p-4 min-h-screen flex flex-col justify-between">
-      {/* User Info */}
       {user && (
         <div className="text-white mb-6">
           <h2 className="text-lg font-semibold">{user.name}</h2>
@@ -67,7 +55,6 @@ const Sidebar = () => {
         </div>
       )}
 
-      {/* Navigation Links */}
       <div className="flex-1">
         {navLinks.map((item, i) => (
           <Link
@@ -81,7 +68,6 @@ const Sidebar = () => {
         ))}
       </div>
 
-      {/* Logout Button */}
       <div className="mt-6">
         <button
           className="bg-white text-[#003366] font-semibold w-full py-2 rounded shadow hover:bg-gray-100 transition"
