@@ -8,6 +8,7 @@ import CompleteTasks from "./pages/CompleteTasks";
 import ImportantTasks from "./pages/ImportantTasks";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import SharedTasks from "./pages/SharedTasks";
 import { authActions } from "./store/auth";
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="alltasks" element={<AllTasks />} />
           <Route path="importantTasks" element={<ImportantTasks />} />
           <Route path="completeTasks" element={<CompleteTasks />} />
+          <Route path="/sharedTasks" element={<SharedTasks />} />
         </Route>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />

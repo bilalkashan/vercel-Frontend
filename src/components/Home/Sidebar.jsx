@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { authActions } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
+import { FaShareAlt } from "react-icons/fa";
 import axios from "axios";
 
 const Sidebar = () => {
@@ -33,9 +34,32 @@ const Sidebar = () => {
       icon: <MdIncompleteCircle />,
       link: "/incompleteTasks",
     },
+
+    {
+      title: "Shared Tasks",
+      icon: <FaShareAlt />,
+      link: "/sharedTasks",
+    },
   ];
 
   const [Data, setData] = useState();
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/auth/profile", {
+          headers,
+        });
+        setUser(response.data.user);
+      } catch (err) {
+        console.error("Failed to fetch user profile:", err);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleLogout = () => {
     dispatch(authActions.logout());
@@ -45,34 +69,36 @@ const Sidebar = () => {
   };
 
   const headers = {
-  id: localStorage.getItem("id"),
-  authorization: `Bearer ${localStorage.getItem("token")}`,
-};
+    id: localStorage.getItem("id"),
+    Authorization: `Bearer ${localStorage.getItem("token")}`, // Capital A
+  };
 
   useEffect(() => {
-  const fetchTasks = async () => {
-  try {
-    const response = await axios.get("http://localhost:8080/all-tasks", { headers });
-    setData(response.data.data);
-  } catch (err) {
-    console.error("Failed to fetch tasks:", err);
-  }
-};
+    const fetchTasks = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/auth/all-tasks",
+          { headers }
+        );
+        setData(response.data.tasks);
+      } catch (err) {
+        console.error("Failed to fetch tasks:", err);
+      }
+    };
 
-  fetchTasks();
-}, []);
-  
+    fetchTasks();
+  }, []);
 
   return (
     <>
       {Data && (
         <div className="cursor-pointer">
-        <h2 className="text-xl text-[#f4f6f9] font-semibold mb-1">
-          {Data.name}
-        </h2>
-        <h4 className="mb-2 text-[#f4f6f9]">{Data.email}</h4>
-        <hr className="text-[#f4f6f9]" />
-      </div>
+          <h2 className="text-xl text-[#f4f6f9] font-semibold mb-1">
+            {user.name}
+          </h2>
+          <h4 className="mb-2 text-[#f4f6f9]">{user.email}</h4>
+          <hr className="text-[#f4f6f9]" />
+        </div>
       )}
 
       <div>

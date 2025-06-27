@@ -16,16 +16,15 @@ const AllTasks = () => {
   const [Data, setData] = useState();
 
   const headers = {
-    id: localStorage.getItem("id"),
-    authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("token")}`, 
   };
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/all-tasks", {
+      const response = await axios.get("http://localhost:8080/auth/all-tasks", {
         headers,
       });
-      setData(response.data.data);
+      setData(response.data.tasks);
     } catch (err) {
       console.error("Failed to fetch tasks:", err);
     }
@@ -39,15 +38,18 @@ const AllTasks = () => {
     <>
       <div>
         <div className="w-full flex justify-end px-4 py-2">
+          <h1 className="w-full flex text-4xl font-semibold px-1 py-2">
+            All Task List
+          </h1>
           <button onClick={() => setAddToDo("fixed")}>
-            <IoAddCircleSharp className="text-4xl text-gray-800 hover:text-[#003366] transition-all duration-300 cursor-pointer" />
+            <IoAddCircleSharp className="text-5xl text-gray-800 hover:text-[#003366] transition-all duration-300 cursor-pointer" />
           </button>
         </div>
         {Data && (
           <Cards
             home={"true"}
             setAddToDo={setAddToDo}
-            data={Data.tasks}
+            data={Data}
             refreshTasks={fetchTasks}
             setUpdatedData={setUpdatedData}
           />
@@ -58,6 +60,7 @@ const AllTasks = () => {
         setAddToDo={setAddToDo}
         updatedData={updatedData}
         setUpdatedData={setUpdatedData}
+        refreshTasks={fetchTasks}
       />
     </>
   );

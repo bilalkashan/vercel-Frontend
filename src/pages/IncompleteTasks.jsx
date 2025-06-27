@@ -15,16 +15,19 @@ const IncompleteTasks = () => {
 
   const headers = {
     id: localStorage.getItem("id"),
-    authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("token")}`, // Capital A
   };
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/incomplete-task", {
-        headers,
-      });
+      const response = await axios.get(
+        "http://localhost:8080/auth/incomplete-task",
+        {
+          headers,
+        }
+      );
       console.log("Incomplete tasks fetched:", response.data);
-      setData(response.data.tasks); // ✅ correct key
+      setData(response.data.tasks);
     } catch (err) {
       console.error("Failed to fetch incomplete tasks:", err);
     }
@@ -36,12 +39,15 @@ const IncompleteTasks = () => {
 
   return (
     <div>
-      <Cards 
-        home={"false"} 
-        data={Data} 
-        refreshTasks={fetchTasks} 
-        setAddToDo={setAddToDo} 
-        setUpdatedData={setUpdatedData} 
+      <h1 className="w-full flex text-4xl font-semibold px-3 py-3 mb-3">
+        In Complete Task List
+      </h1>
+      <Cards
+        home={"false"}
+        data={Data}
+        refreshTasks={fetchTasks}
+        setAddToDo={setAddToDo}
+        setUpdatedData={setUpdatedData}
       />
     </div>
   );

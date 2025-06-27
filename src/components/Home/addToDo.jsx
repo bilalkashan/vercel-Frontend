@@ -1,7 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
+const addToDo = ({
+  addToDo,
+  setAddToDo,
+  updatedData,
+  setUpdatedData,
+  refreshTasks,
+}) => {
   const [Data, setData] = useState({
     title: "",
     description: "",
@@ -11,7 +19,7 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
 
   const headers = {
     id: localStorage.getItem("id"),
-    authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("token")}`, // Capital A
   };
 
   useEffect(() => {
@@ -39,25 +47,21 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
       Data.dueDate === "" ||
       Data.tags === ""
     ) {
-      alert("All fields are required");
+      toast.error("All fields are required");
       return;
     }
 
     try {
-      if (updatedData?.id) {
-        await axios.put(
-          `http://localhost:8080/update-tasks/${updatedData.id}`,
-          Data,
-          { headers }
-        );
-      } else {
-        await axios.post("http://localhost:8080/add-todo", Data, { headers });
-      }
-
+      await axios.post("http://localhost:8080/auth/add-todo", Data, {
+        headers,
+      });
+      refreshTasks();
       setData({ title: "", description: "", dueDate: "", tags: "" });
       setAddToDo("hidden");
+      toast.success("Task added successfully!");
     } catch (err) {
       console.error("Error submitting task:", err);
+      toast.error("Failed to add task.");
     }
   };
 
@@ -68,38 +72,39 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
       Data.dueDate === "" ||
       Data.tags === ""
     ) {
-      alert("All fields are required");
+      toast.error("All fields are required");
       return;
     }
 
     try {
       if (updatedData?.id) {
         await axios.put(
-          `http://localhost:8080/update-tasks/${updatedData.id}`,
+          `http://localhost:8080/auth/update-tasks/${updatedData.id}`,
           Data,
           { headers }
         );
-      } else {
-        await axios.put(`http://localhost:8080/update-tasks/${updatedData.id}`, Data, {
-          headers,
-        });
-        setUpdatedData({
-          id: "",
-          title: "",
-          description: "",
-          dueDate: "",
-          tags: "",
-        });
-        setData({ title: "", description: "", dueDate: "", tags: "" });
-        setAddToDo("hidden");
       }
+
+      refreshTasks();
+      setUpdatedData({
+        id: "",
+        title: "",
+        description: "",
+        dueDate: "",
+        tags: "",
+      });
+      setData({ title: "", description: "", dueDate: "", tags: "" });
+      setAddToDo("hidden");
+      toast.success("Task updated successfully!");
     } catch (err) {
-      console.error("Error submitting task:", err);
+      console.error("Error updating task:", err);
+      toast.error("Failed to update task.");
     }
   };
 
   return (
     <>
+      <ToastContainer position="top-center" autoClose={2000} />
       <div
         className={`${addToDo} fixed top-0 left-0 bg-gray-800 opacity-80 h-screen w-full`}
       ></div>
@@ -107,9 +112,10 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
         className={`${addToDo} fixed top-0 left-0 flex items-center justify-center h-screen w-full shadow-md`}
       >
         <div className="w-2/6 bg-[#f4f6f9] p-4 rounded">
-          <h1 className="text-[#003366] text-3xl w-full items-center justify-center font-semibold mb-3">
-            Add New To-Do
+          <h1 className="text-[#003366] text-3xl font-semibold text-center mb-5">
+            {updatedData.id === "" ? "Add New To-Do" : "Update To-Do"}
           </h1>
+
           <input
             type="text"
             placeholder="Title"
@@ -118,6 +124,7 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
             onChange={handleChange}
             className="border px-3 py-2 rounded w-full mb-3"
           />
+
           <textarea
             cols="30"
             rows="3"
@@ -125,12 +132,11 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
             placeholder="Description.."
             value={Data.description}
             onChange={handleChange}
-            className="border px-3 py-2 rounded w-full mb-2"
+            className="border px-3 py-2 rounded w-full mb-3"
           ></textarea>
 
           <input
             type="date"
-            placeholder="Due Date"
             name="dueDate"
             value={Data.dueDate}
             onChange={handleChange}
@@ -142,47 +148,35 @@ const addToDo = ({ addToDo, setAddToDo, updatedData, setUpdatedData }) => {
             placeholder="Tags"
             name="tags"
             value={Data.tags}
-            className="border px-3 py-2 rounded w-full mb-3"
             onChange={handleChange}
+            className="border px-3 py-2 rounded w-full mb-4"
           />
 
-          {updatedData.id === "" ? (
+          <div className="flex gap-3">
             <button
-              className="px-5 py-2 bg-[#003366] rounded text-[#f4f6f9] text-xl shadow-md cursor-pointer"
-              onClick={handleSubmit}
+              className="flex-1 px-5 py-2 bg-[#003366] rounded text-[#f4f6f9] text-xl shadow-md cursor-pointer"
+              onClick={updatedData.id === "" ? handleSubmit : updateTask}
             >
-              Add
+              {updatedData.id === "" ? "Add" : "Update"}
             </button>
-          ) : (
-            <button
-              className="px-5 py-2 bg-[#003366] rounded text-[#f4f6f9] text-xl shadow-md cursor-pointer"
-              onClick={updateTask}
-            >
-              Update
-            </button>
-          )}
 
-          <button
-            className="cursor-pointer px-5 py-2 bg-[#003366] rounded text-[#f4f6f9] shadow-md text-xl right-0 mx-3"
-            onClick={() => {
-              setAddToDo("hidden");
-              setData({
-                title: "",
-                description: "",
-                dueDate: "",
-                tags: "",
-              });
-              setUpdatedData({
-                id: "",
-                title: "",
-                description: "",
-                dueDate: "",
-                tags: "",
-              });
-            }}
-          >
-            Cancel
-          </button>
+            <button
+              className="flex-1 px-5 py-2 bg-gray-500 rounded text-white text-xl shadow-md cursor-pointer"
+              onClick={() => {
+                setAddToDo("hidden");
+                setData({ title: "", description: "", dueDate: "", tags: "" });
+                setUpdatedData({
+                  id: "",
+                  title: "",
+                  description: "",
+                  dueDate: "",
+                  tags: "",
+                });
+              }}
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </>
