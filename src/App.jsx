@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import AllTasks from "./pages/AllTasks";
 import IncompleteTasks from "./pages/IncompleteTasks";
 import CompleteTasks from "./pages/CompleteTasks";
