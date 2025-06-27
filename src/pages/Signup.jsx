@@ -44,14 +44,12 @@ const Signup = () => {
     }
 
     if (!isValidName(name)) {
-      toast.warning(
-        "Name must be >3 letters, not start with number, and contain only letters"
-      );
+      toast.warning("Name must be >3 letters, not start with number, and contain only letters");
       return;
     }
 
     if (!isValidUsername(username)) {
-      toast.warning("invalid username");
+      toast.warning("Invalid username");
       return;
     }
 
@@ -66,10 +64,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/signup",
-        Data
-      );
+      const response = await axios.post("http://localhost:8080/auth/signup", Data);
       toast.success(response.data.message || "Signup successful");
       setData({ name: "", username: "", email: "", password: "" });
 
@@ -82,57 +77,59 @@ const Signup = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 flex items-center justify-center h-screen w-full bg-[#f4f6f9]">
-      <div className="w-2/6 bg-white shadow-lg p-4 rounded">
+    <div className="min-h-screen flex items-center justify-center bg-[#f4f6f9] px-4">
+      <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-lg p-6 md:p-8 rounded-lg">
         <ToastContainer position="top-center" autoClose={2000} />
-        <h1 className="text-[#003366] text-3xl font-bold mb-4 text-center">
+        <h1 className="text-[#003366] text-2xl md:text-3xl font-bold mb-6 text-center">
           Signup
         </h1>
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={Data.name}
-          onChange={handleChange}
-          className="px-3 py-2 rounded w-full bg-[#f4f6f9] mb-3 shadow-md"
-        />
+        <div className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={Data.name}
+            onChange={handleChange}
+            className="px-4 py-2 rounded w-full bg-[#f4f6f9] shadow-md focus:outline-none"
+          />
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={Data.username}
+            onChange={handleChange}
+            className="px-4 py-2 rounded w-full bg-[#f4f6f9] shadow-md focus:outline-none"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={Data.email}
+            onChange={handleChange}
+            className="px-4 py-2 rounded w-full bg-[#f4f6f9] shadow-md focus:outline-none"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={Data.password}
+            onChange={handleChange}
+            className="px-4 py-2 rounded w-full bg-[#f4f6f9] shadow-md focus:outline-none"
+          />
+        </div>
 
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={Data.username}
-          onChange={handleChange}
-          className="px-3 py-2 rounded w-full bg-[#f4f6f9] mb-3 shadow-md"
-        />
-
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={Data.email}
-          onChange={handleChange}
-          className="px-3 py-2 rounded w-full bg-[#f4f6f9] mb-3 shadow-md"
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={Data.password}
-          onChange={handleChange}
-          className="px-3 py-2 rounded w-full bg-[#f4f6f9] mb-4 shadow-md"
-        />
-
-        <div className="w-full flex flex-col gap-2 items-center">
+        <div className="mt-6 flex flex-col items-center gap-3">
           <button
-            className="px-4 py-2 bg-[#003366] font-semibold rounded text-[#f4f6f9] text-xl shadow-lg cursor-pointer w-[10vw]"
+            className="px-6 py-2 bg-[#003366] text-white font-semibold text-lg rounded shadow-md hover:bg-[#002244] transition w-full"
             onClick={handleSubmit}
           >
             Signup
           </button>
-          <Link to="/login" className="text-[#003366] font-semibold text-md hover:text-black">
+          <Link
+            to="/login"
+            className="text-[#003366] font-semibold text-sm hover:text-black"
+          >
             Already have an account? Login
           </Link>
         </div>

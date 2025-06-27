@@ -56,39 +56,44 @@ const Login = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 flex items-center justify-center h-screen w-full bg-[#f4f6f9]">
+    <div className="min-h-screen flex items-center justify-center bg-[#f4f6f9] px-4">
       <ToastContainer position="top-center" autoClose={2000} />
-      <div className="w-2/6 bg-white shadow-lg p-4 rounded">
-        <h1 className="text-[#003366] text-3xl font-bold mb-4 text-center">
+      <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white shadow-lg p-6 md:p-8 rounded-lg">
+        <h1 className="text-[#003366] text-2xl md:text-3xl font-bold mb-6 text-center">
           Login
         </h1>
 
-        <input
-          type="text"
-          placeholder="Username"
-          name="username"
-          onChange={handleChange}
-          value={Data.username}
-          className="px-3 py-3 rounded w-full bg-[#f4f6f9] mb-4 shadow-md"
-        />
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Username"
+            name="username"
+            onChange={handleChange}
+            value={Data.username}
+            className="px-4 py-2 rounded w-full bg-[#f4f6f9] shadow-md focus:outline-none"
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          onChange={handleChange}
-          value={Data.password}
-          className="px-3 py-3 rounded w-full bg-[#f4f6f9] mb-4 shadow-md"
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={handleChange}
+            value={Data.password}
+            className="px-4 py-2 rounded w-full bg-[#f4f6f9] shadow-md focus:outline-none"
+          />
+        </div>
 
-        <div className="w-full flex flex-col gap-2 items-center">
+        <div className="mt-6 flex flex-col items-center gap-3">
           <button
-            className="px-4 py-2 bg-[#003366] font-semibold rounded text-[#f4f6f9] text-xl shadow-lg cursor-pointer w-[10vw]"
+            className="px-6 py-2 bg-[#003366] text-white font-semibold text-lg rounded shadow-md hover:bg-[#002244] transition w-full"
             onClick={handleSubmit}
           >
             Login
           </button>
-          <Link to="/signup" className="text-[#003366] font-semibold  text-md hover:text-black">
+          <Link
+            to="/signup"
+            className="text-[#003366] font-semibold text-sm hover:text-black"
+          >
             Don't have an account? Signup
           </Link>
         </div>
@@ -98,3 +103,4 @@ const Login = () => {
 };
 
 export default Login;
+

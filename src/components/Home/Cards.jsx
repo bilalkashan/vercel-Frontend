@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
   const [shareTaskId, setShareTaskId] = useState(null);
   const [shareEmail, setShareEmail] = useState("");
-  const [shareToDo, setShareToDo] = useState("hidden");
+  const [shareToDo, setShareToDo] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -27,7 +27,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
       refreshTasks();
     } catch (error) {
       toast.error("Failed to update task");
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -45,7 +45,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
       );
       toast.success("Task shared successfully!");
       setShareEmail("");
-      setShareToDo("hidden");
+      setShareToDo(false);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to share task");
     }
@@ -62,7 +62,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
       refreshTasks();
     } catch (error) {
       toast.error("Failed to mark task as important");
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -75,7 +75,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
       refreshTasks();
     } catch (err) {
       toast.error("Failed to delete task");
-      console.error("Failed to delete task:", err);
+      console.error(err);
     }
   };
 
@@ -87,18 +87,18 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
   return (
     <>
       <ToastContainer position="top-center" autoClose={2000} />
-      <div className="grid grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
         {data &&
           data.map((items) => (
             <div
               key={items._id}
-              className="flex flex-col justify-between bg-[#f4f6f9] rounded p-4 hover:scale-102 shadow-md hover:cursor-pointer transition-all duration-300"
+              className="flex flex-col justify-between bg-[#f4f6f9] rounded p-4 hover:scale-[1.02] shadow-md transition-transform duration-300 cursor-pointer"
             >
               <div>
                 <h3 className="font-semibold text-xl">{items.title}</h3>
-                <p className="my-2 text-gray-700">{items.description}</p>
+                <p className="my-2 text-gray-700 break-words">{items.description}</p>
 
-                <div className="text-sm text-gray-600 mt-2">
+                <div className="text-sm text-gray-600 mt-2 space-y-1">
                   <p>
                     <strong>Tags:</strong> {items.tags}
                   </p>
@@ -107,23 +107,18 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
                     {new Date(items.dueDate).toLocaleDateString()}
                   </p>
 
-                  
                   {home === "false" && items.userId && (
                     <p>
-                      <strong>Shared By:</strong> {items.userId.name} 
-                      {/* ({items.userId.email}) */}
+                      <strong>Shared By:</strong> {items.userId.name}
                     </p>
                   )}
-                  
+
                   {home === "true" && items.sharedWith?.length > 0 && (
                     <div className="mt-2">
                       <strong>Shared With:</strong>
-                      <ul className="list-disc list-inside text-sm text-gray-600">
+                      <ul className="list-disc list-inside text-sm text-gray-600 max-h-24 overflow-auto">
                         {items.sharedWith.map((user) => (
-                          <li key={user._id}>
-                            {user.name} 
-                            {/* ({user.email}) */}
-                          </li>
+                          <li key={user._id}>{user.name}</li>
                         ))}
                       </ul>
                     </div>
@@ -131,20 +126,20 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
                 </div>
               </div>
 
-              <div className="mt-4 w-full flex gap-4">
+              <div className="mt-4 flex flex-col sm:flex-row gap-3 w-full">
                 <button
                   className={`${
                     items.complete === false ? "bg-red-400" : "bg-green-700"
-                  } text-[#f4f6f9] p-2 rounded w-3/6 font-semibold hover:shadow-md cursor-pointer`}
+                  } text-white p-2 rounded flex-1 font-semibold hover:shadow-md transition`}
                   onClick={() => handleCompleteTask(items._id)}
                 >
                   {items.complete ? "Completed" : "In Complete"}
                 </button>
 
-                <div className="p-1 w-3/6 text-2xl flex justify-around cursor-pointer">
+                <div className="flex items-center justify-around flex-1 gap-4 text-2xl text-gray-700">
                   <button onClick={() => handleImportant(items._id)}>
                     {items.important ? (
-                      <FaHeart className="text-red-600 cursor-pointer" />
+                      <FaHeart className="text-red-600" />
                     ) : (
                       <FaRegHeart />
                     )}
@@ -152,7 +147,6 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
 
                   {home !== "false" && (
                     <button
-                      className="cursor-pointer hover:text-[#003366]"
                       onClick={() =>
                         handleUpdate(
                           items._id,
@@ -170,16 +164,16 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
                   <button
                     onClick={() => {
                       setShareTaskId(items._id);
-                      setShareToDo("fixed");
+                      setShareToDo(true);
                     }}
-                    className="cursor-pointer hover:text-[#003366]"
+                    className="hover:text-[#003366]"
                   >
                     <FaShareAlt />
                   </button>
 
                   <button
-                    className="cursor-pointer hover:text-[#003366]"
                     onClick={() => handleDelete(items._id)}
+                    className="hover:text-[#003366]"
                   >
                     <MdDelete />
                   </button>
@@ -190,20 +184,20 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
 
         {home === "true" && (
           <button
-            className="shadow-md flex flex-col bg-[#f4f6f9] justify-center items-center rounded p-4 hover:scale-102 hover:cursor-pointer"
+            className="shadow-md flex flex-col bg-[#f4f6f9] justify-center items-center rounded p-4 hover:scale-[1.02] cursor-pointer transition-transform duration-300"
             onClick={() => setAddToDo("fixed")}
           >
-            <IoAddCircleSharp className="text-5xl " />
+            <IoAddCircleSharp className="text-5xl" />
             <h2 className="text-2xl">Add Task</h2>
           </button>
         )}
       </div>
 
-      {shareToDo === "fixed" && (
+      {shareToDo && (
         <>
-          <div className="fixed top-0 left-0 bg-gray-800 opacity-80 h-screen w-full z-40"></div>
-          <div className="fixed top-0 left-0 flex items-center justify-center h-screen w-full shadow-md z-50">
-            <div className="w-2/6 bg-[#f4f6f9] p-4 rounded">
+          <div className="fixed inset-0 bg-gray-800 opacity-80 z-40"></div>
+          <div className="fixed inset-0 flex items-center justify-center z-50 px-4">
+            <div className="w-full max-w-md bg-[#f4f6f9] p-6 rounded shadow-lg">
               <h1 className="text-[#003366] text-3xl font-semibold text-center mb-5">
                 Share Task
               </h1>
@@ -213,21 +207,21 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
                 placeholder="Enter user email"
                 value={shareEmail}
                 onChange={(e) => setShareEmail(e.target.value)}
-                className="border px-3 py-2 rounded w-full mb-4"
+                className="border border-gray-300 px-3 py-2 rounded w-full mb-4"
               />
 
               <div className="flex gap-3">
                 <button
-                  className="flex-1 px-5 py-2 bg-[#003366] text-white text-xl rounded shadow-md"
+                  className="flex-1 px-5 py-2 bg-[#003366] text-white text-xl rounded shadow-md hover:bg-[#002244] transition"
                   onClick={handleShare}
                 >
                   Share
                 </button>
 
                 <button
-                  className="flex-1 px-5 py-2 bg-gray-500 text-white text-xl rounded shadow-md"
+                  className="flex-1 px-5 py-2 bg-gray-500 text-white text-xl rounded shadow-md hover:bg-gray-600 transition"
                   onClick={() => {
-                    setShareToDo("hidden");
+                    setShareToDo(false);
                     setShareEmail("");
                   }}
                 >
