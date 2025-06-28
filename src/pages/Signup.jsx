@@ -64,7 +64,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/signup", Data);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/signup`, Data);
       toast.success(response.data.message || "Signup successful");
       setData({ name: "", username: "", email: "", password: "" });
 
