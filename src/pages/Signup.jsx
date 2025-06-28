@@ -64,7 +64,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/signup`, Data);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/signup`, Data);
       toast.success(response.data.message || "Signup successful");
       setData({ name: "", username: "", email: "", password: "" });
 
