@@ -83,7 +83,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
   return (
     <>
       <ToastContainer position="top-center" autoClose={2000} />
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 px-2 py-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 px-2 py-4 shadow:md">
         {data &&
           data.map((items) => (
             <div
