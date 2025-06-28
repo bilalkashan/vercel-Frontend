@@ -30,7 +30,7 @@ const SharedTasks = () => {
 
   return (
     <div className="bg-white rounded-lg shadow p-4 md:p-6 w-full overflow-auto">
-      <h1 className="text-2xl px-4 py-2 font-semibold text-[#003366] mb-4">Shared Tasks</h1>
+      <h1 className="text-2xl px-4 py-2 font-bold text-[#003366] mb-4">Shared Tasks</h1>
       <Cards
         home={"false"}
         setAddToDo={() => {}} 
