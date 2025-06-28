@@ -1,4 +1,3 @@
-// AllTasks.jsx
 import React, { useState, useEffect } from "react";
 import Cards from "../components/Home/Cards";
 import { IoAddCircleSharp } from "react-icons/io5";
@@ -22,9 +21,12 @@ const AllTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/all-tasks", {
-        headers,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/all-tasks`,
+        {
+          headers,
+        }
+      );
       setData(response.data.tasks);
     } catch (err) {
       console.error("Failed to fetch tasks:", err);

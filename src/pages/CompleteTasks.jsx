@@ -21,7 +21,7 @@ const CompleteTasks = () => {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/auth/complete-task",
+        `${import.meta.env.VITE_API_URL}/auth/complete-task`,
         {
           headers,
         }

@@ -21,7 +21,7 @@ const IncompleteTasks = () => {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/auth/incomplete-task",
+        `${import.meta.env.VITE_API_URL}/auth/incomplete-task`,
         { headers }
       );
       setData(response.data.tasks);

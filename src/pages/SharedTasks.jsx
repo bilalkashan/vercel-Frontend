@@ -1,4 +1,3 @@
-// pages/SharedTasks.jsx
 import React, { useState, useEffect } from "react";
 import Cards from "../components/Home/Cards";
 import axios from "axios";
@@ -8,13 +7,13 @@ const SharedTasks = () => {
 
   const headers = {
     id: localStorage.getItem("id"),
-    authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("token")}`, // Capital A
   };
 
   const fetchSharedTasks = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/auth/shared-tasks",
+        `${import.meta.env.VITE_API_URL}/auth/shared-tasks`,
         {
           headers,
         }

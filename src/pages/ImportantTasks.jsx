@@ -20,9 +20,12 @@ const ImportantTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/auth/important-task", {
-        headers,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/auth/important-task`,
+        {
+          headers,
+        }
+      );
       setData(response.data.tasks);
     } catch (err) {
       console.error("Failed to fetch important tasks:", err);

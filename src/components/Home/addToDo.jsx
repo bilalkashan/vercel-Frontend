@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const addToDo = ({
+const AddToDo = ({
   addToDo,
   setAddToDo,
   updatedData,
@@ -52,7 +52,7 @@ const addToDo = ({
     }
 
     try {
-      await axios.post("http://localhost:8080/auth/add-todo", Data, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/auth/add-todo`, Data, {
         headers,
       });
       refreshTasks();
@@ -79,7 +79,7 @@ const addToDo = ({
     try {
       if (updatedData?.id) {
         await axios.put(
-          `http://localhost:8080/auth/update-tasks/${updatedData.id}`,
+          `${import.meta.env.VITE_API_URL}/auth/update-tasks/${updatedData.id}`,
           Data,
           { headers }
         );
@@ -183,4 +183,4 @@ const addToDo = ({
   );
 };
 
-export default addToDo;
+export default AddToDo;

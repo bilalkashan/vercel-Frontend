@@ -28,7 +28,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/auth/profile", { headers });
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/auth/profile`, { headers });
         setUser(response.data.user);
       } catch (err) {
         console.error("Failed to fetch user profile:", err);

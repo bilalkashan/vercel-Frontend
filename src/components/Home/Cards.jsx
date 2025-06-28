@@ -18,7 +18,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
   const handleCompleteTask = async (id) => {
     try {
       await axios.put(
-        `http://localhost:8080/auth/update-complete-tasks/${id}`,
+        `${import.meta.env.VITE_API_URL}/auth/update-complete-tasks/${id}`,
         {},
         { headers }
       );
@@ -37,7 +37,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
 
     try {
       await axios.patch(
-        `http://localhost:8080/auth/share-task/${shareTaskId}`,
+        `${import.meta.env.VITE_API_URL}/auth/share-task/${shareTaskId}`,
         { shareWithEmail: shareEmail },
         { headers }
       );
@@ -52,7 +52,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
   const handleImportant = async (id) => {
     try {
       await axios.put(
-        `http://localhost:8080/auth/update-imp-tasks/${id}`,
+        `${import.meta.env.VITE_API_URL}/auth/update-imp-tasks/${id}`,
         {},
         { headers }
       );
@@ -65,7 +65,7 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/auth/delete-task/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/auth/delete-task/${id}`, {
         headers,
       });
       toast.success("Task deleted successfully");
@@ -128,7 +128,9 @@ const Cards = ({ home, setAddToDo, data, refreshTasks, setUpdatedData }) => {
 
               <div className="mt-4 flex flex-col sm:flex-row gap-3 w-full">
                 <button
-                  className={`${items.complete === false ? "bg-red-500" : "bg-green-600"}  cursor-pointer text-white px-3 py-2 rounded flex-1 font-semibold hover:shadow-md transition`}
+                  className={`${
+                    items.complete === false ? "bg-red-500" : "bg-green-600"
+                  }  cursor-pointer text-white px-3 py-2 rounded flex-1 font-semibold hover:shadow-md transition`}
                   onClick={() => handleCompleteTask(items._id)}
                 >
                   {items.complete ? "Completed" : "In Complete"}
