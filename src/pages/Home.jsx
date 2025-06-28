@@ -8,7 +8,7 @@ const Home = () => {
       <div className="w-full md:w-1/5">
         <Sidebar />
       </div>
-      <div className="w-full md:w-4/5 overflow-y-auto p-4 md:p-1">
+      <div className="w-full md:w-4/5 overflow-y-hidden p-4 md:p-1">
         <Outlet />
       </div>
     </div>
