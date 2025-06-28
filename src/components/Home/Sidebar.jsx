@@ -46,10 +46,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-full md:w-64 bg-[#003366] p-4 min-h-screen flex flex-col justify-between">
+    <div className="w-full md:w-64 bg-[#003366] rounded-xl p-6 min-h-screen flex flex-col justify-between shadow-md">
       {user && (
-        <div className="text-white mb-6">
-          <h2 className="text-lg font-semibold">{user.name}</h2>
+        <div className="text-white  mb-6">
+          <h2 className=" text-2xl font-semibold">{user.name}</h2>
           <h4 className="text-sm">{user.email}</h4>
           <hr className="my-3 border-gray-200" />
         </div>
@@ -70,7 +70,7 @@ const Sidebar = () => {
 
       <div className="mt-6">
         <button
-          className="bg-white text-[#003366] font-semibold w-full py-2 rounded shadow hover:bg-gray-100 transition"
+          className="bg-white text-[#003366] font-bold w-full py-2 rounded shadow hover:bg-gray-100 transition cursor-pointer"
           onClick={handleLogout}
         >
           Log Out

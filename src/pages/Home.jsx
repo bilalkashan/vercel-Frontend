@@ -4,15 +4,15 @@ import { Outlet } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className='flex h-[96vh] gap-4' >
-        <div className='w-1/6 rounded-xl p-4 flex flex-col justify-between bg-[#003366] shadow-md'>
-            <Sidebar />
-        </div>
-        <div className='w-5/6 bg-white rounded-xl p-4 shadow-md'>
-            <Outlet />
-        </div>
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden gap-3 bg-gray-100 m-1">
+      <div className="w-full md:w-1/5">
+        <Sidebar />
+      </div>
+      <div className="w-full md:w-4/5 overflow-y-auto p-4 md:p-1">
+        <Outlet />
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Home;
